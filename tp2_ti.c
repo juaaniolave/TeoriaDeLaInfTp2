@@ -21,24 +21,22 @@ void lee_archivo (char *nombre_archivo) {
 
    char palabra[MAX_PALABRA];
    pal  vec_pal[1000];  // Suponemos un máximo de 1000 palabras diferentes
-   int  totalPalabras        = 0;
-   int  totalPalabrasArchivo = 0;
+   int  totalPalabras = 0;
 
-   int i, j, k;
-   int encontrada            = 0;
-   int alfabeto[MAX_ALFABET] = {0};
+   int i, j, k, m, longitud;
+   int encontrada;
+   int alfabeto[MAX_ALFABET] = {0}; //inicializa todas las componentes en 0
 
    FILE* archivo = fopen(nombre_archivo,"rt");
 
    while (fscanf(archivo, "%s", palabra) == 1) {
-      totalPalabrasArchivo++;
-      
+      encontrada = 0;
       // Busca la palabra en el array
       for (i = 0 ; i < totalPalabras ; i++) {
          if (strcmp(vec_pal[i].palabra, palabra) == 0) {
             vec_pal[i].frecuencia++;
-               encontrada = 1;
-               break;
+            encontrada = 1;
+            break; //corta el for si la encontro
          }
       }
 
@@ -52,28 +50,24 @@ void lee_archivo (char *nombre_archivo) {
          /*Recorro cada palabra nueva y pongo en 1 el vector del alfabeto si hay
          alguna palabra existente no marcada*/
          
-         for (j = 0 ; j < strlen(vec_pal[totalPalabras].palabra) ; j++) {
-            if (alfabeto[vec_pal[totalPalabras].palabra[j]] != 0)
-               alfabeto[vec_pal[totalPalabras].palabra[j]] = 1;   
-         }
+         longitud = strlen(vec_pal[totalPalabras - 1].palabra);
+         for (j = 0 ; j < longitud ; j++) 
+            alfabeto[(int)(vec_pal[totalPalabras - 1].palabra[j])] = 1;   
       }
    }
 
    // Calcula la probabilidad de aparición para cada palabra
-   for (int i = 0 ; i < totalPalabras ; i++) {
-      vec_pal[i].probabilidad = (double)vec_pal[i].frecuencia / totalPalabrasArchivo;
-   }
+   for (int m = 0 ; m < totalPalabras ; m++) 
+      vec_pal[m].probabilidad = (double)vec_pal[m].frecuencia / totalPalabras;
 
     // Imprime las palabras y sus probabilidades
-   for (int i = 0 ; i < totalPalabras ; i++) {
-      printf("Palabra: %s, Frecuencia: %d, Probabilidad: %.4f\n", vec_pal[i].palabra, vec_pal[i].frecuencia, vec_pal[i].probabilidad);
-   }
+   for (int n = 0 ; n < totalPalabras ; n++) 
+      printf("Palabra: %s, Frecuencia: %d, Probabilidad: %.4f\n", vec_pal[n].palabra, vec_pal[n].frecuencia, vec_pal[n].probabilidad);
    
    //Imprime el alfabeto codigo
    printf("--- Alfabeto codigo ---\n");
-   for (k = 0 ; k < MAX_ALFABET ; k++) {
-      printf("%c \n",alfabeto[k]);
-   }
+   for (k = 0 ; k < MAX_ALFABET ; k++) 
+      printf("Componente %d  =  %c \n", k,(char)k);
    
    fclose(archivo);
 }
