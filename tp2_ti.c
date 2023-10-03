@@ -42,6 +42,8 @@ void lee_archivo (char *nombre_archivo) {
    int alfabeto[MAX_ALFABET] = {0}; //inicializa todas las componentes en 0
    double entropia=0;
    double longitudMedia=0;
+   int alfabetoCodigo=0;
+   float inecuacionKraft=0;
    FILE* archivo = fopen(nombre_archivo,"rt");
 
    if (archivo == NULL){
@@ -94,12 +96,38 @@ void lee_archivo (char *nombre_archivo) {
 
    printf("\nLa entropia de la fuente es: %.2f bits\n", entropia);
    printf("La longitud media del codigo es :%.2f\n", longitudMedia);
+
+   
    //Imprime el alfabeto codigo
+
+
    printf("\n--- Alfabeto codigo ---\n");
    
-   for (k = 0 ; k < MAX_ALFABET ; k++) 
-      if (alfabeto[k])
-      printf("Componente %d:  %c \n", k,(char)k);
-   
+   for (k = 0 ; k < MAX_ALFABET ; k++) {
+      if (alfabeto[k]){
+         alfabetoCodigo++;
+         printf("Componente %d:  %c \n", k,(char)k);
+      }
+   }
+   for (int m = 0 ; m < totalPalabras ; m++){
+      if (alfabetoCodigo!=0) 
+         inecuacionKraft+=(pow((double)1/alfabetoCodigo,(double)strlen(vec_pal[m].palabra)));    
+   }
+   printf("\nInecuacion de Kraft-McMillan: %.2f \n",inecuacionKraft);
+   if (inecuacionKraft <=1)
+      printf("Como es menor o igual a 1, cumple con la inecuacion\n\n");
+   else
+      printf("Como es mayor a 1, no cumple con la inecuacion\n\n");
+
+   for (int k=0; k< totalPalabras;k++){
+      for (j=0; j < totalPalabras; j++){
+         if(j!=k){
+            if(!strncmp(vec_pal[k].palabra,vec_pal[j].palabra,strlen(vec_pal[k].palabra)))
+               printf("%s es prefijo de %s, por lo tanto no es instantaneo\n",vec_pal[k].palabra,vec_pal[j].palabra);
+               break;
+         }
+         }
+      }
+
    fclose(archivo);
 }
