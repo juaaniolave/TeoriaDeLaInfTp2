@@ -37,7 +37,7 @@ void lee_archivo (char *nombre_archivo) {
    int  totalPalabras = 0;
    int  totalFrecuenciaPalabras = 0;
 
-   int i, j, k, m, longitud;
+   int i, j, k, m, longitud, esInstantaneo = 1;
    int encontrada;
    int alfabeto[MAX_ALFABET] = {0}; //inicializa todas las componentes en 0
    double entropia=0;
@@ -114,20 +114,26 @@ void lee_archivo (char *nombre_archivo) {
          inecuacionKraft+=(pow((double)1/alfabetoCodigo,(double)strlen(vec_pal[m].palabra)));    
    }
    printf("\nInecuacion de Kraft-McMillan: %.2f \n",inecuacionKraft);
-   if (inecuacionKraft <=1)
-      printf("Como es menor o igual a 1, cumple con la inecuacion\n\n");
+   if (inecuacionKraft <= 1) {
+      printf("Como es menor o igual a 1, cumple con la inecuacion de Kraft-McMillan\n\n");
+      printf("El codigo puede ser instantaneo, cumple la condicion necesaria\n");
+      for (int k = 0 ; k < totalPalabras ; k++){ //verifico condicion prefijo
+         for (j = 0 ; j < totalPalabras ; j++){
+            if (j != k) {
+               if(!strncmp(vec_pal[k].palabra,vec_pal[j].palabra,strlen(vec_pal[k].palabra)))
+                  printf("%s es prefijo de %s, por lo tanto no es instantaneo\n",vec_pal[k].palabra,vec_pal[j].palabra);
+                  esInstantaneo = 0;
+                  break;
+            }
+         }
+      }
+      if (esInstantaneo)
+         printf("Por cumplir la condicion suficiente el codigo es instantaneo\n");
+   }   
    else
       printf("Como es mayor a 1, no cumple con la inecuacion\n\n");
 
-   for (int k=0; k< totalPalabras;k++){
-      for (j=0; j < totalPalabras; j++){
-         if(j!=k){
-            if(!strncmp(vec_pal[k].palabra,vec_pal[j].palabra,strlen(vec_pal[k].palabra)))
-               printf("%s es prefijo de %s, por lo tanto no es instantaneo\n",vec_pal[k].palabra,vec_pal[j].palabra);
-               break;
-         }
-         }
-      }
+  
 
    fclose(archivo);
 }
