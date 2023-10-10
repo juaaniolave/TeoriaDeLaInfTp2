@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
    
    char* extension_txt = ".txt";
    char *nombre_archivo=NULL;
-   int n=3;
+   int n = 3;
 
 
    for (int i = 1; i < argc; i++) {
@@ -40,10 +40,10 @@ void lee_archivo (char *nombre_archivo) {
    int i, j, k, m, longitud, esInstantaneo = 1;
    int encontrada;
    int alfabeto[MAX_ALFABET] = {0}; //inicializa todas las componentes en 0
-   double entropia=0;
-   double longitudMedia=0;
-   int alfabetoCodigo=0;
-   float inecuacionKraft=0;
+   double entropia = 0;
+   double longitudMedia = 0;
+   int alfabetoCodigo = 0;
+   float inecuacionKraft = 0;
    FILE* archivo = fopen(nombre_archivo,"rt");
 
    if (archivo == NULL){
@@ -97,10 +97,7 @@ void lee_archivo (char *nombre_archivo) {
    printf("\nLa entropia de la fuente es: %.2f bits\n", entropia);
    printf("La longitud media del codigo es :%.2f\n", longitudMedia);
 
-   
    //Imprime el alfabeto codigo
-
-
    printf("\n--- Alfabeto codigo ---\n");
    
    for (k = 0 ; k < MAX_ALFABET ; k++) {
@@ -110,8 +107,8 @@ void lee_archivo (char *nombre_archivo) {
       }
    }
    for (int m = 0 ; m < totalPalabras ; m++){
-      if (alfabetoCodigo!=0) 
-         inecuacionKraft+=(pow((double)1/alfabetoCodigo,(double)strlen(vec_pal[m].palabra)));    
+      if (alfabetoCodigo != 0) 
+         inecuacionKraft += (pow((double)1/alfabetoCodigo,(double)strlen(vec_pal[m].palabra)));    
    }
    printf("\nInecuacion de Kraft-McMillan: %.2f \n",inecuacionKraft);
    if (inecuacionKraft <= 1) {
@@ -128,12 +125,27 @@ void lee_archivo (char *nombre_archivo) {
          }
       }
       if (esInstantaneo)
-         printf("Por cumplir la condicion suficiente el codigo es instantaneo\n");
+         printf("Por cumplir la condicion suficiente (condicion de prefijo) el codigo es instantaneo\n");
    }   
    else
       printf("Como es mayor a 1, no cumple con la inecuacion\n\n");
 
-  
+   //verifico si el codigo es compacto
+   int h = 0;
+
+   while (h < totalPalabras && strlen(vec_pal[h].palabra) > logaritmo(totalPalabras,(1/vec_pal[h].probabilidad)))
+      h++;
+   if (h < totalPalabras)
+      printf("El codigo no es compacto\n");
+   else
+      printf("El codigo es compacto\n");
+      
 
    fclose(archivo);
+
+   
 }
+
+   float logaritmo (int base, float num) {
+      return log10(num) / log10(base);
+   }
