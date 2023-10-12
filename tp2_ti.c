@@ -10,8 +10,8 @@ void lee_archivo (char*);
 
 int main(int argc, char *argv[]) {
    
-   char* extension_txt = ".txt";
-   char *nombre_archivo=NULL;
+   char* extension_txt  = ".txt";
+   char *nombre_archivo = NULL;
    int n = 3;
 
 
@@ -40,13 +40,14 @@ void lee_archivo (char *nombre_archivo) {
    int i, j, k, m, longitud, esInstantaneo = 1;
    int encontrada;
    int alfabeto[MAX_ALFABET] = {0}; //inicializa todas las componentes en 0
-   double entropia = 0;
-   double longitudMedia = 0;
-   int alfabetoCodigo = 0;
+   double entropia       = 0;
+   double longitudMedia  = 0;
+   int alfabetoCodigo    = 0;
    float inecuacionKraft = 0;
+
    FILE* archivo = fopen(nombre_archivo,"rt");
 
-   if (archivo == NULL){
+   if (archivo == NULL) {
       printf("No se pudo abrir el archivo");
       exit (-1);
    }
@@ -81,11 +82,11 @@ void lee_archivo (char *nombre_archivo) {
    }
 
    // Calcula la probabilidad de aparición para cada palabra
-   for (int m = 0 ; m < totalPalabras ; m++){ 
+   for (int m = 0 ; m < totalPalabras ; m++) { 
       vec_pal[m].probabilidad = (double)vec_pal[m].frecuencia / totalFrecuenciaPalabras;
-      if(vec_pal[m].probabilidad != 0){
-         entropia+=vec_pal[m].probabilidad*log2(1/vec_pal[m].probabilidad);
-         longitudMedia+=strlen(vec_pal[m].palabra)*vec_pal[m].probabilidad;
+      if(vec_pal[m].probabilidad != 0) {
+         entropia      += vec_pal[m].probabilidad * log2(1/vec_pal[m].probabilidad);
+         longitudMedia += strlen(vec_pal[m].palabra)*vec_pal[m].probabilidad;
       }
    }
 
@@ -101,14 +102,14 @@ void lee_archivo (char *nombre_archivo) {
    printf("\n--- Alfabeto codigo ---\n");
    
    for (k = 0 ; k < MAX_ALFABET ; k++) {
-      if (alfabeto[k]){
+      if (alfabeto[k]) {
          alfabetoCodigo++;
          printf("Componente %d:  %c \n", k,(char)k);
       }
    }
    for (int m = 0 ; m < totalPalabras ; m++){
       if (alfabetoCodigo != 0) 
-         inecuacionKraft += (pow((double)1/alfabetoCodigo,(double)strlen(vec_pal[m].palabra)));    
+         inecuacionKraft += (pow((double) 1 / alfabetoCodigo,(double)strlen(vec_pal[m].palabra)));    
    }
    printf("\nInecuacion de Kraft-McMillan: %.2f \n",inecuacionKraft);
    if (inecuacionKraft <= 1) {
@@ -142,7 +143,6 @@ void lee_archivo (char *nombre_archivo) {
       
 
    fclose(archivo);
-
    
 }
 
