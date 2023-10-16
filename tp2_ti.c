@@ -5,7 +5,7 @@
 
 #define MAX_PALABRA 50
 #define MAX_ALFABET 256
-
+float logaritmo(int,float);
 void lee_archivo (char*);
 
 int main(int argc, char *argv[]) {
@@ -134,12 +134,12 @@ void lee_archivo (char *nombre_archivo) {
    //verifico si el codigo es compacto
    int h = 0;
 
-   while (h < totalPalabras && strlen(vec_pal[h].palabra) > logaritmo(totalPalabras,(1/vec_pal[h].probabilidad)))
+   while (h < totalPalabras && strlen(vec_pal[h].palabra) >= round(logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad))))
       h++;
    if (h < totalPalabras)
-      printf("El codigo no es compacto\n");
+      printf("\nEl codigo no es compacto\n");
    else
-      printf("El codigo es compacto\n");
+      printf("\nEl codigo es compacto\n");
       
 
    fclose(archivo);
@@ -149,3 +149,4 @@ void lee_archivo (char *nombre_archivo) {
    float logaritmo (int base, float num) {
       return log10(num) / log10(base);
    }
+
