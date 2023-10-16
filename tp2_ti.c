@@ -134,12 +134,15 @@ void lee_archivo (char *nombre_archivo) {
    //verifico si el codigo es compacto
    int h = 0;
 
-   while (h < totalPalabras && strlen(vec_pal[h].palabra) >= round(logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad))))
-      h++;
+   while (h < totalPalabras && strlen(vec_pal[h].palabra) <= (int)ceil(logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad)))){
+      printf("palabra = %s longitud= %d logaritmo = %f, logaritmo redoneado(techo) = %d \n", vec_pal[h].palabra, strlen(vec_pal[h].palabra) ,logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad)),(int)ceil(logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad))));
+       h++;
+   }
    if (h < totalPalabras)
-      printf("\nEl codigo no es compacto\n");
+      printf("\nEl codigo no es compacto ya que la palabra = %s longitud= %d logaritmo = %f, logaritmo redoneado(techo) = %d \n", vec_pal[h].palabra, strlen(vec_pal[h].palabra) ,logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad)),(int)ceil(logaritmo(alfabetoCodigo,(float)(1/vec_pal[h].probabilidad))));
+
    else
-      printf("\nEl codigo es compacto\n");
+      printf("\nEl codigo es compacto ya que todas las palabras son menores o iguales a su informacion\n");
       
 
    fclose(archivo);
